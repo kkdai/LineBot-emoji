@@ -17,12 +17,25 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/kkdai/line-bot-sdk-go/linebot"
+	"golang.org/x/text/encoding/unicode/utf32"
 )
 
 var bot *linebot.Client
+
+var BrownEmoji string
+
+func init() {
+	var err error
+	utf32BEIB := utf32.UTF32(utf32.BigEndian, utf32.IgnoreBOM)
+	dec := utf32BEIB.NewDecoder()
+	BrownEmoji, err = dec.String("\x00\x10\x00\x84")
+	if err != nil {
+		log.Print(err)
+	}
+
+}
 
 func main() {
 	var err error
@@ -32,6 +45,16 @@ func main() {
 	port := os.Getenv("PORT")
 	addr := fmt.Sprintf(":%s", port)
 	http.ListenAndServe(addr, nil)
+}
+
+//OldEmoji Please note this way already been deprecated.OldEmoji
+func OldEmoji(msg *linebot.TextMessage) *linebot.TextMessage {
+	return linebot.NewTextMessage(fmt.Sprintf("%s 你好 %s, 這是舊的傳送 Emoji 的方式。", BrownEmoji, msg.Text))
+}
+
+//NewEmoji This use linebot.AddEmoji function.
+func NewEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
+	return linebot.NewTextMessage(fmt.Sprintf("$ 你好 %s, 這是新的傳送 Emoji 的方式。", msg.Text)).AddEmoji(linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086"))
 }
 
 func callbackHandler(w http.ResponseWriter, r *http.Request) {
@@ -50,11 +73,10 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
-				quota, err := bot.GetMessageQuota().Do()
 				if err != nil {
 					log.Println("Quota err:", err)
 				}
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(" 你好 :"+message.Text+" OK! remain message:"+strconv.FormatInt(quota.Value, 10))).Do(); err != nil {
+				if _, err = bot.ReplyMessage(event.ReplyToken, OldEmoji(message), NewEmoji(message)).Do(); err != nil {
 					log.Print(err)
 				}
 			}
