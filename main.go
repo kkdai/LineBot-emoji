@@ -47,14 +47,26 @@ func main() {
 	http.ListenAndServe(addr, nil)
 }
 
-//OldEmoji Please note this way already been deprecated.OldEmoji
-func OldEmoji(msg *linebot.TextMessage) *linebot.TextMessage {
-	return linebot.NewTextMessage(fmt.Sprintf("%s 你好 %s, 這是舊的傳送 Emoji 的方式。", BrownEmoji, msg.Text))
+//OldEmojiMsg Please note this way already been deprecated.
+func OldEmojiMsg(msg *linebot.TextMessage) *linebot.TextMessage {
+	return linebot.NewTextMessage(fmt.Sprintf("%s 你好 \n %s, 這是舊的傳送 Emoji 的方式。", BrownEmoji, msg.Text))
 }
 
-//NewEmoji This use linebot.AddEmoji function.
-func NewEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
-	return linebot.NewTextMessage(fmt.Sprintf("$ 你好 %s, 這是新的傳送 Emoji 的方式。", msg.Text)).AddEmoji(linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086"))
+//NewEmojiMsg This use linebot.AddEmoji function.
+func NewEmojiMsg(msg *linebot.TextMessage) linebot.SendingMessage {
+	return linebot.NewTextMessage(fmt.Sprintf("$ 你好 \n %s, 這是新的傳送 Emoji 的方式。", msg.Text)).AddEmoji(linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086"))
+}
+
+//NewEmojiMsgWithEmoji This use linebot.AddEmoji function, also parse original emoji to replace it.
+func NewEmojiMsgWithEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
+	if len(msg.Emojis) > 0 {
+		retObj := linebot.NewTextMessage(fmt.Sprintf("$ 你好 \n %s, 這是新的傳送 Emoji 的方式，如果你有 emoji 這裡會替換。", msg.Text)).AddEmoji(linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086"))
+		for _, v := range msg.Emojis {
+			retObj = retObj.AddEmoji(linebot.NewEmoji(v.Index, v.ProductID, v.EmojiID))
+		}
+		return retObj
+	}
+	return linebot.NewTextMessage(fmt.Sprintf("$ 你好 \n %s, 這是新的傳送 Emoji 的方式，如果你有 emoji 這裡會替換。", msg.Text)).AddEmoji(linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086"))
 }
 
 func callbackHandler(w http.ResponseWriter, r *http.Request) {
@@ -76,7 +88,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					log.Println("Quota err:", err)
 				}
-				if _, err = bot.ReplyMessage(event.ReplyToken, OldEmoji(message), NewEmoji(message)).Do(); err != nil {
+				if _, err = bot.ReplyMessage(event.ReplyToken, OldEmojiMsg(message), NewEmojiMsg(message), NewEmojiMsgWithEmoji(message)).Do(); err != nil {
 					log.Print(err)
 				}
 			}
