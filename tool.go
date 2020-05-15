@@ -44,7 +44,7 @@ func NewEmojiMsg(msg *linebot.TextMessage) linebot.SendingMessage {
 }
 
 //Replace original emoji `(brown)` to `$`
-func replaceEmoji(oriMsg string, emojis []*linebot.Emoji) string {
+func ReplaceEmoji(oriMsg string, emojis []*linebot.Emoji) string {
 	//Process correct echo message.
 	prefix := 0
 	workMsg := oriMsg
@@ -64,7 +64,7 @@ func replaceEmoji(oriMsg string, emojis []*linebot.Emoji) string {
 func NewEmojiMsgWithEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
 	if len(msg.Emojis) > 0 {
 		//Replace original emoji `(brown)` to `$`
-		workMsg = replaceEmoji(msg.Text, msg.Emojis)
+		workMsg := ReplaceEmoji(msg.Text, msg.Emojis)
 
 		log.Println("Got all detail emoji:", msg.Emojis)
 		retObj := linebot.NewTextMessage(fmt.Sprintf("$%s 你好 \n , 這是新的傳送 Emoji 的方式，如果你有 emoji 這裡會替換。", workMsg)).AddEmoji(linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086"))
