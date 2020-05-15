@@ -46,15 +46,22 @@ func NewEmojiMsg(msg *linebot.TextMessage) linebot.SendingMessage {
 //ReplaceEmoji Replace original emoji `(brown)` to `$`
 func ReplaceEmoji(oriMsg string, emojis []*linebot.Emoji) string {
 	//Process correct echo message.
-	prefix := 0
+	var prefix int
+	var lastLength int
+	if len(emojis) > 0 {
+		prefix = emojis[0].Index
+	}
+
 	workMsg := oriMsg
 	log.Println("OriMsg:", oriMsg)
-	for _, v := range emojis {
+	for k, v := range emojis {
 		log.Println("Got each detail emoji:", v, " text:", workMsg)
 		msgArray := []byte(workMsg)
-		workMsg = fmt.Sprintf("%s%s%s", string(msgArray[:v.Index]), "$", string(msgArray[v.Index+prefix+v.Length:]))
-		prefix := prefix - v.Length + 1
-		log.Println("Work msg:", workMsg, " prefix:", prefix+v.Length)
+		index := v.Index - lastLength + k
+		workMsg = fmt.Sprintf("%s%s%s", string(msgArray[:index]), "$", string(msgArray[index+v.Length:]))
+		log.Println("BB Work msg:", workMsg, " index:", v.Index, " prefix:", prefix, "Length:", prefix+v.Length)
+		lastLength = lastLength + v.Length
+		log.Println("FF Work msg:", workMsg, " index:", v.Index, " prefix:", prefix, "Length:", prefix+v.Length)
 	}
 
 	return workMsg

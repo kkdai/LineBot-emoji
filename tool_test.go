@@ -31,10 +31,8 @@ func TestSingleReplaceEmoji(t *testing.T) {
 	want01 := "$"
 	emojis := []*linebot.Emoji{
 		&linebot.Emoji{
-			Index:     0,
-			Length:    11,
-			ProductID: "5ac22775040ab15980c9b44c",
-			EmojiID:   "106"}}
+			Index:  0,
+			Length: 11}}
 
 	if ret := ReplaceEmoji(test01, emojis); !strings.EqualFold(want01, ret) {
 		t.Errorf("[[single emopji without string]] Replaced failed, %s", ret)
@@ -50,10 +48,8 @@ func TestSingleReplaceEmoji(t *testing.T) {
 	want2 := "aa $"
 	emojis2 := []*linebot.Emoji{
 		&linebot.Emoji{
-			Index:     3,
-			Length:    11,
-			ProductID: "5ac22775040ab15980c9b44c",
-			EmojiID:   "106"}}
+			Index:  3,
+			Length: 11}}
 	if ret := ReplaceEmoji(test2, emojis2); !strings.EqualFold(want2, ret) {
 		t.Errorf("[[single]] Replaced failed is not begin, %s", ret)
 	}
@@ -66,22 +62,49 @@ func TestSingleReplaceEmoji(t *testing.T) {
 }
 
 func TestMultipleReplaceEmoji(t *testing.T) {
-	test2 := "(telescope) hello (telescope), happy"
-	want2 := "$ hello $, happy"
+	test1 := "(12)(12)"
+	want1 := "$$"
+	emojis1 := []*linebot.Emoji{
+		&linebot.Emoji{
+			Index:  0,
+			Length: 4},
+		&linebot.Emoji{
+			Index:  4,
+			Length: 4}}
+
+	if ret := ReplaceEmoji(test1, emojis1); !strings.EqualFold(want1, ret) {
+		t.Errorf("[[double]] Replaced failed, %s", ret)
+	}
+
+	test2 := " (12) (12)"
+	want2 := " $ $"
 	emojis2 := []*linebot.Emoji{
 		&linebot.Emoji{
-			Index:     0,
-			Length:    11,
-			ProductID: "5ac22775040ab15980c9b44c",
-			EmojiID:   "106"},
+			Index:  1,
+			Length: 4},
 		&linebot.Emoji{
-			Index:     17,
-			Length:    11,
-			ProductID: "5ac22775040ab15980c9b44c",
-			EmojiID:   "106"}}
+			Index:  6,
+			Length: 4}}
 
 	if ret := ReplaceEmoji(test2, emojis2); !strings.EqualFold(want2, ret) {
-		t.Errorf("[[multiple]] Replaced failed, %s", ret)
+		t.Errorf("[[double]] Replaced failed with space, %s", ret)
+	}
+
+	test3 := " (12) (12) (12)"
+	want3 := " $ $ $"
+	emojis3 := []*linebot.Emoji{
+		&linebot.Emoji{
+			Index:  1,
+			Length: 4},
+		&linebot.Emoji{
+			Index:  6,
+			Length: 4},
+		&linebot.Emoji{
+			Index:  11,
+			Length: 4}}
+
+	if ret := ReplaceEmoji(test3, emojis3); !strings.EqualFold(want3, ret) {
+		t.Errorf("[[Third]] Replaced failed with space, %s", ret)
 	}
 }
 func TestCheckProdEmojiID(t *testing.T) {
