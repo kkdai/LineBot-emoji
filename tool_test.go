@@ -19,7 +19,7 @@ import (
 	"github.com/kkdai/line-bot-sdk-go/linebot"
 )
 
-func TestReplaceEmoji(t *testing.T) {
+func TestSingleReplaceEmoji(t *testing.T) {
 	test0 := "hello"
 	want0 := "hello"
 	emojis0 := []*linebot.Emoji{}
@@ -46,6 +46,26 @@ func TestReplaceEmoji(t *testing.T) {
 		t.Errorf("[[single]] Replaced failed, %s", ret)
 	}
 
+	test2 := "aa (telescope)"
+	want2 := "aa $"
+	emojis2 := []*linebot.Emoji{
+		&linebot.Emoji{
+			Index:     3,
+			Length:    11,
+			ProductID: "5ac22775040ab15980c9b44c",
+			EmojiID:   "106"}}
+	if ret := ReplaceEmoji(test2, emojis2); !strings.EqualFold(want2, ret) {
+		t.Errorf("[[single]] Replaced failed is not begin, %s", ret)
+	}
+
+	test3 := "aa (telescope) aabb"
+	want3 := "aa $ aabb"
+	if ret := ReplaceEmoji(test3, emojis2); !strings.EqualFold(want3, ret) {
+		t.Errorf("[[single]] Replaced failed is not begin with string, %s", ret)
+	}
+}
+
+func TestMultipleReplaceEmoji(t *testing.T) {
 	test2 := "(telescope) hello (telescope), happy"
 	want2 := "$ hello $, happy"
 	emojis2 := []*linebot.Emoji{
@@ -64,7 +84,6 @@ func TestReplaceEmoji(t *testing.T) {
 		t.Errorf("[[multiple]] Replaced failed, %s", ret)
 	}
 }
-
 func TestCheckProdEmojiID(t *testing.T) {
 	//It includes in standard list
 	prod, emoji := CheckProdEmojiID("5ac2173d031a6752fb806d56", "001")

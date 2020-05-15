@@ -43,7 +43,7 @@ func NewEmojiMsg(msg *linebot.TextMessage) linebot.SendingMessage {
 	return linebot.NewTextMessage(fmt.Sprintf("$%s 你好 \n , 這是新的傳送 Emoji 的方式。", msg.Text)).AddEmoji(linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086"))
 }
 
-//Replace original emoji `(brown)` to `$`
+//ReplaceEmoji Replace original emoji `(brown)` to `$`
 func ReplaceEmoji(oriMsg string, emojis []*linebot.Emoji) string {
 	//Process correct echo message.
 	prefix := 0
@@ -52,9 +52,9 @@ func ReplaceEmoji(oriMsg string, emojis []*linebot.Emoji) string {
 	for _, v := range emojis {
 		log.Println("Got each detail emoji:", v, " text:", workMsg)
 		msgArray := []byte(workMsg)
-		workMsg = fmt.Sprintf("%s%s%s", string(msgArray[:prefix]), "$", string(msgArray[prefix+v.Length:]))
+		workMsg = fmt.Sprintf("%s%s%s", string(msgArray[:v.Index]), "$", string(msgArray[v.Index+prefix+v.Length:]))
 		prefix := prefix - v.Length + 1
-		log.Println("Work msg:", workMsg, " prefix:", prefix)
+		log.Println("Work msg:", workMsg, " prefix:", prefix+v.Length)
 	}
 
 	return workMsg
