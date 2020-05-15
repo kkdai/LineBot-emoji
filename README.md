@@ -1,63 +1,44 @@
-LINE BotTemplate: A simple Golang LINE Bot Template for LINE Bot API
+LINE Emoji demo bot: A somple LINE Chatbot which demo LINE emoji feature (send/receive) by Golang
 ==============
 
-[![Join the chat at https://gitter.im/kkdai/LineBotTemplate](https://badges.gitter.im/kkdai/LineBotTemplate.svg)](https://gitter.im/kkdai/LineBotTemplate?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+ [![GoDoc](https://godoc.org/github.com/kkdai/LineBotEmoji.svg?status.svg)](https://godoc.org/github.com/kkdai/LineBotEmoji)  [![Build Status](https://travis-ci.org/kkdai/LineBotEmoji.svg?branch=master)](https://travis-ci.org/kkdai/LineBotEmoji.svg)
 
- [![GoDoc](https://godoc.org/github.com/kkdai/LineBotTemplate.svg?status.svg)](https://godoc.org/github.com/kkdai/LineBotTemplate)  [![Build Status](https://travis-ci.org/kkdai/LineBotTemplate.svg?branch=master)](https://travis-ci.org/kkdai/LineBotTemplate.svg)
+[![goreportcard.com](https://goreportcard.com/badge/github.com/kkdai/LineBotEmoji)](https://goreportcard.com/report/github.com/kkdai/LineBotEmoji)
 
-[![goreportcard.com](https://goreportcard.com/badge/github.com/kkdai/LineBotTemplate)](https://goreportcard.com/report/github.com/kkdai/LineBotTemplate)
+![](images/final.png)
 
+
+
+For LINE Emoji API, please check:
+
+- [https://developers.line.biz/en/news/2020/04/14/messaging-api-update-april-2020/](https://developers.line.biz/en/news/2020/04/14/messaging-api-update-april-2020/)
+- [https://developers.line.biz/en/news/2020/05/12/messaging-api-update-may-2020/](https://developers.line.biz/en/news/2020/05/12/messaging-api-update-may-2020/)
+
+
+
+How to use it
+=============
+
+![](images/emoji-chatbot.png)
+
+1. Scan this QR code add LINE Friend.
+
+2. Input any string with emoji.
+
+3. The echo bot will reply you three kinds of way message:
+
+   1. Original emoji way with send fixed emoji (Brown) (**it is deprecated.**)
+   2. New Emoji API with send fixed emoji (Brown)
+   3. Echo what user send to the bot. (if your emoji is not [standard one](https://d.line-scdn.net/r/devcenter/sendable_line_emoji_list.pdf)). It will be replaced by Brown one.
+
+    
 
 Installation and Usage
 =============
 
-### 1. Got A LINE Bot API devloper account
-
-- [Make sure you already registered on LINE developer console](https://developers.line.biz/console/), if you need use LINE Bot.
-
-- Create new Messaging Channel
-- Get `Channel Secret` on "Basic Setting" tab.
-- Issue `Channel Access Token` on "Messaging API" tab.
-- Open LINE OA manager from "Basic Setting" tab.
-- Go to Reply setting on OA manager, enable "webhook"
-
-
-### 2. Just Deploy this on Heroku
-
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-- Input `Channel Secret` and `Channel Access Token`.
-- Remember your heroku, ID.
-
-### 3. Go to LINE Bot Dashboard, setup basic API
-
-- Setup your basic account information. Here is some info you will need to know.
-- `Callback URL`: https://{YOUR_HEROKU_SERVER_ID}.herokuapp.com/callback
-
-It all done.
-
-
-### Video Tutorial:
-
-- [How to deploy LINE BotTemplate](https://www.youtube.com/watch?v=0BIknEz1f8k)
-- [Hoe to modify your LINE BotTemplate code](https://www.youtube.com/watch?v=ckij73sIRik)
-
-
-### Chinese Tutorial:
-
-如果你看得懂繁體中文，這裡有[中文的介紹](http://www.evanlin.com/create-your-line-bot-golang/) 
-
-Inspired By
-=============
-
-- [Golang (heroku) で LINE Bot 作ってみる](http://qiita.com/dongri/items/ba150f04a98e96b160e7)
-- [LINE BOT をとりあえずタダで Heroku で動かす](http://qiita.com/yuya_takeyama/items/0660a59d13e2cd0b2516)
-- [阿美語萌典 BOT](https://github.com/miaoski/amis-linebot)
-
-Project52
----------------
-
-It is one of my [project 52](https://github.com/kkdai/project52).
+More detail, please check my [LINE Bot Template project](https://github.com/kkdai/LineBotTemplate).
 
 
 License
