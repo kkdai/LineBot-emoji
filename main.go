@@ -68,8 +68,8 @@ func NewEmojiMsgWithEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
 		// workMsg := msg.Text
 		for _, v := range msg.Emojis {
 			log.Println("Got each detail emoji:", v, " text:", msg.Text)
-			msgArray := []byte(workMsg)
-			msgArray[v.Index]
+			// msgArray := []byte(workMsg)
+			// msgArray[v.Index]
 			retObj = retObj.AddEmoji(v)
 		}
 		return retObj
