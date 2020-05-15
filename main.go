@@ -74,13 +74,12 @@ func NewEmojiMsgWithEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
 		}
 
 		log.Println("Got all detail emoji:", msg.Emojis)
-		// prefixIndex := len("$ 你好 \n ")
-		retObj := linebot.NewTextMessage(fmt.Sprintf("$%s 你好 \n , 這是新的傳送 Emoji 的方式，如果你有 emoji 這裡會替換。", workMsg)).AddEmoji(linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086")).AddEmoji(linebot.NewEmoji(6, "5ac1bfd5040ab15980c9b435", "086"))
+		retObj := linebot.NewTextMessage(fmt.Sprintf("$%s 你好 \n , 這是新的傳送 Emoji 的方式，如果你有 emoji 這裡會替換。", workMsg)).AddEmoji(linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086"))
 
-		// for _, v := range msg.Emojis {
-		// 	log.Println("Got emoji detail:", v)
-		// 	retObj = retObj.AddEmoji(linebot.NewEmoji(prefixIndex+v.Index, "5ac1bfd5040ab15980c9b435", "086"))
-		// }
+		for _, v := range msg.Emojis {
+			log.Println("Got emoji detail:", v)
+			retObj = retObj.AddEmoji(linebot.NewEmoji(1+v.Index, "5ac1bfd5040ab15980c9b435", "086"))
+		}
 		return retObj
 	}
 	return linebot.NewTextMessage(fmt.Sprintf("$ 你好 \n %s, 這是新的傳送 Emoji 的方式，如果你有 emoji 這裡會替換。", msg.Text)).AddEmoji(linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086"))
