@@ -70,7 +70,7 @@ func NewEmojiMsgWithEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
 			prefix := prefix + v.Index
 			log.Println("Got each detail emoji:", v, " text:", msg.Text)
 			msgArray := []byte(workMsg)
-			workMsg = fmt.Sprintf("$s$s$s", string(msgArray[:prefix]), "$", string(msgArray[prefix+v.Length]))
+			workMsg = fmt.Sprintf("%s%s%s", string(msgArray[:prefix]), "$", string(msgArray[prefix+v.Length]))
 			log.Println("Work msg:", workMsg, " prefix:", prefix)
 		}
 
