@@ -15,6 +15,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/kkdai/line-bot-sdk-go/linebot"
 	"golang.org/x/text/encoding/unicode/utf32"
@@ -63,7 +64,8 @@ func NewEmojiMsgWithEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
 
 		for _, v := range msg.Emojis {
 			log.Println("Got emoji detail:", v)
-			retObj = retObj.AddEmoji(linebot.NewEmoji(1+v.Index, v.ProductID, v.EmojiID))
+			prodID, emojiID := CheckProdEmojiID(v.ProductID, v.EmojiID)
+			retObj = retObj.AddEmoji(linebot.NewEmoji(1+v.Index, prodID, emojiID))
 		}
 		return retObj
 	}
@@ -73,6 +75,56 @@ func NewEmojiMsgWithEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
 //CheckProdEmojiID :Return an valid product and emoji ID.
 //If Emoji product ID is not standard one, it will be replaced by standard brown emoji.
 func CheckProdEmojiID(proID, emojiID string) (string, string) {
+	//All standard emoji product list from https://d.line-scdn.net/r/devcenter/sendable_line_emoji_list.pdf
+	emojiProductIDs := [...]string{"5ac1bfd5040ab15980c9b435",
+		"5ac1de17040ab15980c9b438",
+		"5ac21184040ab15980c9b43a",
+		"5ac21542031a6752fb806d55",
+		"5ac2173d031a6752fb806d56",
+		"5ac21869040ab15980c9b43b",
+		"5ac218e3040ab15980c9b43c",
+		"5ac2197b040ab15980c9b43d",
+		"5ac21a13031a6752fb806d57",
+		"5ac21a18040ab15980c9b43e",
+		"5ac21a8c040ab15980c9b43f",
+		"5ac21ae3040ab15980c9b440",
+		"5ac21b4f031a6752fb806d59",
+		"5ac21ba5040ab15980c9b441",
+		"5ac21bf9031a6752fb806d5a",
+		"5ac21c46040ab15980c9b442",
+		"5ac21c4e031a6752fb806d5b",
+		"5ac21cc5031a6752fb806d5c",
+		"5ac21cce040ab15980c9b443",
+		"5ac21d59031a6752fb806d5d",
+		"5ac21e6c040ab15980c9b444",
+		"5ac21ef5031a6752fb806d5e",
+		"5ac21f52040ab15980c9b445",
+		"5ac21fda040ab15980c9b446",
+		"5ac2206d031a6752fb806d5f",
+		"5ac220c2031a6752fb806d60",
+		"5ac2211e031a6752fb806d61",
+		"5ac2213e040ab15980c9b447",
+		"5ac2216f040ab15980c9b448",
+		"5ac221ca040ab15980c9b449",
+		"5ac22224031a6752fb806d62",
+		"5ac22293031a6752fb806d63",
+		"5ac222bf031a6752fb806d64",
+		"5ac223c6040ab15980c9b44a",
+		"5ac2264e040ab15980c9b44b",
+		"5ac22775040ab15980c9b44c",
+		"5ac2280f031a6752fb806d65",
+		"5ac22a8c031a6752fb806d66",
+		"5ac22b23040ab15980c9b44d",
+		"5ac22bad031a6752fb806d67",
+		"5ac22c9e031a6752fb806d68",
+		"5ac22d62031a6752fb806d69",
+		"5ac22def040ab15980c9b44e",
+		"5ac22e85040ab15980c9b44f"}
 
-	return "", ""
+	for _, v := range emojiProductIDs {
+		if strings.EqualFold(v, proID) {
+			return proID, emojiID
+		}
+	}
+	return "5ac1bfd5040ab15980c9b435", "086"
 }
