@@ -60,7 +60,6 @@ func NewEmojiMsg(msg *linebot.TextMessage) linebot.SendingMessage {
 //NewEmojiMsgWithEmoji This use linebot.AddEmoji function, also parse original emoji to replace it.
 func NewEmojiMsgWithEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
 	if len(msg.Emojis) > 0 {
-
 		//Process correct echo message.
 		prefix := 0
 		oriMsg := msg.Text
@@ -70,7 +69,7 @@ func NewEmojiMsgWithEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
 			prefix := prefix + v.Index
 			log.Println("Got each detail emoji:", v, " text:", msg.Text)
 			msgArray := []byte(workMsg)
-			workMsg = fmt.Sprintf("%s%s%s", string(msgArray[:prefix]), "$", string(msgArray[prefix+v.Length]))
+			workMsg = fmt.Sprintf("%s%s%s", string(msgArray[:prefix]), "$", string(msgArray[prefix+v.Length+1:]))
 			log.Println("Work msg:", workMsg, " prefix:", prefix)
 		}
 
