@@ -79,7 +79,7 @@ func NewEmojiMsgWithEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
 
 		for _, v := range msg.Emojis {
 			log.Println("Got emoji detail:", v)
-			retObj = retObj.AddEmoji(linebot.NewEmoji(prefixIndex+v.Index, v.ProductID, v.EmojiID))
+			retObj = retObj.AddEmoji(linebot.NewEmoji(prefixIndex+v.Index, "5ac1bfd5040ab15980c9b435", "086"))
 		}
 		return retObj
 	}
