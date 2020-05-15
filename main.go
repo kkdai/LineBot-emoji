@@ -62,8 +62,14 @@ func NewEmojiMsgWithEmoji(msg *linebot.TextMessage) linebot.SendingMessage {
 	if len(msg.Emojis) > 0 {
 		log.Println("Got all detail emoji:", msg.Emojis)
 		retObj := linebot.NewTextMessage(fmt.Sprintf("$ 你好 \n %s, 這是新的傳送 Emoji 的方式，如果你有 emoji 這裡會替換。", msg.Text)).AddEmoji(linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086"))
+
+		// prefix := 0
+		// oriMsg := msg.Text
+		// workMsg := msg.Text
 		for _, v := range msg.Emojis {
-			log.Println("Got each detail emoji:", v)
+			log.Println("Got each detail emoji:", v, " text:", msg.Text)
+			msgArray := []byte(workMsg)
+			msgArray[v.Index]
 			retObj = retObj.AddEmoji(v)
 		}
 		return retObj
