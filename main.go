@@ -49,9 +49,6 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
-				if err != nil {
-					log.Println("Quota err:", err)
-				}
 				if _, err = bot.ReplyMessage(event.ReplyToken,
 					OldEmojiMsg(message),
 					NewEmojiMsg(message),
@@ -60,6 +57,10 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			case *linebot.StickerMessage:
 				log.Println("StickerMessage:", message)
+				if _, err = bot.ReplyMessage(event.ReplyToken,
+					linebot.NewTextMessage(fmt.Sprintf("你傳送的是貼圖訊息：ProductID:%s, StickerID:%s Sticker Type:%s", message.PackageID, message.StickerID, message.StickerResourceType))).Do(); err != nil {
+					log.Print(err)
+				}
 			}
 		}
 	}
