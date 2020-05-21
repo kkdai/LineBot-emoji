@@ -58,6 +58,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					NewEmojiMsgWithEmoji(message)).Do(); err != nil {
 					log.Print(err)
 				}
+			case *linebot.StickerMessage:
+				log.Println("StickerMessage:", message)
 			}
 		}
 	}

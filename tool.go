@@ -40,7 +40,9 @@ func OldEmojiMsg(msg *linebot.TextMessage) *linebot.TextMessage {
 
 //NewEmojiMsg This use linebot.AddEmoji function.
 func NewEmojiMsg(msg *linebot.TextMessage) linebot.SendingMessage {
-	return linebot.NewTextMessage(fmt.Sprintf("$%s 你好 \n , 這是新的傳送 Emoji 的方式。", msg.Text)).AddEmoji(linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086"))
+	return linebot.NewTextMessage(
+		fmt.Sprintf("$%s 你好 \n , 這是新的傳送 Emoji 的方式。", msg.Text)).AddEmoji(
+		linebot.NewEmoji(0, "5ac1bfd5040ab15980c9b435", "086"))
 }
 
 //ReplaceEmoji Replace original emoji `(brown)` to `$`
