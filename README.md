@@ -1,9 +1,9 @@
 LINE Emoji demo bot: A sample LINE Chatbot to demo LINE emoji feature (send/receive) by Golang
 ==============
 
- [![GoDoc](https://godoc.org/github.com/kkdai/LineBotEmoji.svg?status.svg)](https://godoc.org/github.com/kkdai/LineBotEmoji)  [![Build Status](https://travis-ci.org/kkdai/LineBotEmoji.svg?branch=master)](https://travis-ci.org/kkdai/LineBotEmoji.svg)
+ [![GoDoc](https://godoc.org/github.com/kkdai/LineBotEmoji.svg?status.svg)](https://godoc.org/github.com/kkdai/LineBot-Emoji)  [![Build Status](https://travis-ci.org/kkdai/LineBotEmoji.svg?branch=master)](https://travis-ci.org/kkdai/LineBot-Emoji.svg)
 
-[![goreportcard.com](https://goreportcard.com/badge/github.com/kkdai/LineBotEmoji)](https://goreportcard.com/report/github.com/kkdai/LineBotEmoji)
+[![goreportcard.com](https://goreportcard.com/badge/github.com/kkdai/LineBotEmoji)](https://goreportcard.com/report/github.com/kkdai/LineBot-Emoji)
 
 ![](images/final.png)
 
