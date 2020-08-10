@@ -16,7 +16,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kkdai/line-bot-sdk-go/linebot"
+	"github.com/line/line-bot-sdk-go/linebot"
 )
 
 func TestSingleReplaceEmoji(t *testing.T) {

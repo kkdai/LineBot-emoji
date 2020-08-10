@@ -17,7 +17,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/kkdai/line-bot-sdk-go/linebot"
+	"github.com/line/line-bot-sdk-go/linebot"
 	"golang.org/x/text/encoding/unicode/utf32"
 )
 
