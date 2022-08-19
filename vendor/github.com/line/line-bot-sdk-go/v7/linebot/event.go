@@ -183,11 +183,16 @@ const (
 	StickerResourceTypeAnimation      StickerResourceType = "ANIMATION"
 	StickerResourceTypeSound          StickerResourceType = "SOUND"
 	StickerResourceTypeAnimationSound StickerResourceType = "ANIMATION_SOUND"
-	StickerResourceTypePerStickerText StickerResourceType = "PER_STICKER_TEXT"
+	StickerResourceTypePerStickerText StickerResourceType = "MESSAGE"
 	StickerResourceTypePopup          StickerResourceType = "POPUP"
 	StickerResourceTypePopupSound     StickerResourceType = "POPUP_SOUND"
-	StickerResourceTypeNameText       StickerResourceType = "NAME_TEXT"
+	StickerResourceTypeNameText       StickerResourceType = "CUSTOM"
 )
+
+// DeliveryContext type
+type DeliveryContext struct {
+	IsRedelivery bool `json:"isRedelivery"`
+}
 
 // Event type
 type Event struct {
@@ -206,6 +211,8 @@ type Event struct {
 	Members           []*EventSource
 	Unsend            *Unsend
 	VideoPlayComplete *VideoPlayComplete
+	WebhookEventID    string
+	DeliveryContext   DeliveryContext
 }
 
 type rawEvent struct {
@@ -223,6 +230,8 @@ type rawEvent struct {
 	Things            *rawThingsEvent      `json:"things,omitempty"`
 	Unsend            *Unsend              `json:"unsend,omitempty"`
 	VideoPlayComplete *VideoPlayComplete   `json:"videoPlayComplete,omitempty"`
+	WebhookEventID    string               `json:"webhookEventId"`
+	DeliveryContext   DeliveryContext      `json:"deliveryContext"`
 }
 
 type rawMemberEvent struct {
@@ -299,6 +308,8 @@ func (e *Event) MarshalJSON() ([]byte, error) {
 		Postback:          e.Postback,
 		Unsend:            e.Unsend,
 		VideoPlayComplete: e.VideoPlayComplete,
+		WebhookEventID:    e.WebhookEventID,
+		DeliveryContext:   e.DeliveryContext,
 	}
 	if e.Beacon != nil {
 		raw.Beacon = &rawBeaconEvent{
@@ -405,6 +416,7 @@ func (e *Event) MarshalJSON() ([]byte, error) {
 			StickerID:           m.StickerID,
 			StickerResourceType: m.StickerResourceType,
 			Keywords:            m.Keywords,
+			Text:                m.Text,
 		}
 	}
 	return json.Marshal(&raw)
@@ -422,6 +434,8 @@ func (e *Event) UnmarshalJSON(body []byte) (err error) {
 	e.Mode = rawEvent.Mode
 	e.Timestamp = time.Unix(rawEvent.Timestamp/milliSecPerSec, (rawEvent.Timestamp%milliSecPerSec)*nanoSecPerMilliSec).UTC()
 	e.Source = rawEvent.Source
+	e.WebhookEventID = rawEvent.WebhookEventID
+	e.DeliveryContext = rawEvent.DeliveryContext
 
 	switch rawEvent.Type {
 	case EventTypeMessage:
@@ -472,6 +486,7 @@ func (e *Event) UnmarshalJSON(body []byte) (err error) {
 				StickerID:           rawEvent.Message.StickerID,
 				StickerResourceType: rawEvent.Message.StickerResourceType,
 				Keywords:            rawEvent.Message.Keywords,
+				Text:                rawEvent.Message.Text,
 			}
 		}
 	case EventTypePostback:
